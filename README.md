@@ -3,10 +3,14 @@
 Website portofolio pribadi, **HTML + CSS + JavaScript murni** (tanpa framework, tanpa build step).
 Tema gelap, dua bahasa (ID/EN), animasi scroll reveal, dan form kontak.
 
+🌐 **Live:** https://fadhilrezam.github.io
+
 ```
 portfolio/
 ├── index.html              # struktur halaman
 ├── start.mjs               # server lokal tanpa dependency (Node.js)
+├── robots.txt, sitemap.xml # SEO
+├── .nojekyll               # biar GitHub Pages tidak proses Jekyll
 ├── assets/
 │   ├── css/style.css       # seluruh gaya (design tokens + responsif)
 │   ├── js/main.js          # render konten, ganti bahasa, animasi, form
@@ -83,7 +87,9 @@ tagline: {
    ```
    Jika dikosongkan, pesan otomatis dibuka di aplikasi email Anda (mailto) — tidak error.
 6. **Foto profil** (opsional) — SVG placeholder tersedia di `assets/avatar.svg`.
-7. **Domain & SEO** — ubah `<link rel="canonical">` dan `og:url` di `index.html`.
+7. **Domain** — sudah diisi `https://fadhilrezam.github.io`. Kalau nanti beli domain
+   sendiri (mis. `fadhilreza.dev`), ubah `<link rel="canonical">`, `og:url`,
+   `robots.txt`, dan `sitemap.xml`.
 8. **Preferensi bahasa bawaan** — `assets/js/main.js`, fungsi `storedLang()`:
    `return "en"` → `return "id"` bila ingin Bahasa Indonesia saat pertama dibuka.
 
@@ -97,24 +103,86 @@ versi — tidak ada yang perlu "dibalik" manual.
 
 ---
 
-## Deploy (gratis)
+## Deploy ke GitHub Pages (gratis)
 
-### Opsi 1 — GitHub Pages (paling umum)
+Repo sudah di-`git init` dan commit pertama sudah dibuat. Yang tersisa hanya langkah di bawah.
+
+### Langkah 1 — Buat repo di GitHub
+
+1. Buka https://github.com/new
+2. **Owner**: `fadhilrezam`
+3. **Repository name**: `fadhilrezam.github.io` ← *wajib persis ini*
+4. **Public** ✅ (kalau private, GitHub Pages tidak bisa jalan)
+5. **Jangan** centang "Add a README file", "Add .gitignore", atau "Choose a license"
+   — supaya tidak bentrok dengan file yang sudah ada di komputer
+6. Klik **Create repository**
+
+### Langkah 2 — Push dari komputer
+
+Buka **Git Bash** (atau terminal) lalu jalankan:
 
 ```bash
-cd portfolio
-git init
-git add .
-git commit -m "Portfolio v1"
-git branch -M main
-git remote add origin https://github.com/<user>/<user>.github.io.git
+cd /e/side_project/tender_llm/portfolio
+git remote add origin https://github.com/fadhilrezam/fadhilrezam.github.io.git
 git push -u origin main
 ```
 
-Lalu di GitHub → **Settings → Pages → Source: main / (root)**.
-Tampilnya di `https://<user>.github.io`.
+Saat diminta **Username** → `fadhilrezam`
+Saat diminta **Password** → tempel **Personal Access Token**, bukan password GitHub.
 
-### Opsi 2 — Netlify / Vercel
+<details>
+<summary>Cara bikin Personal Access Token (kalau belum punya)</summary>
+
+1. Buka https://github.com/settings/tokens → **Generate new token (classic)**
+2. **Note**: `portfolio-deploy`
+3. **Expiration**: `90 days` (atau `No expiration` kalau malas perpanjang)
+4. Centang **`repo`** saja
+5. Klik **Generate token** → salin token yang muncul (hanya muncul sekali)
+6. Tempel sebagai Password di langkah push di atas
+
+</details>
+
+### Langkah 3 — Aktifkan GitHub Pages
+
+1. Buka https://github.com/fadhilrezam/fadhilrezam.github.io/settings/pages
+2. **Source** → pilih `Deploy from a branch`
+3. **Branch** → `main`, folder `/ (root)`
+4. Klik **Save**
+5. Tunggu 1–3 menit, lalu buka **https://fadhilrezam.github.io**
+
+> Tampilan "Your site is live at …" akan muncul kalau berhasil.
+
+### Cara update website nanti
+
+Edit file di komputer, lalu:
+
+```bash
+git add .
+git commit -m "update konten"
+git push
+```
+
+Situs ikut ter-update dalam ±1 menit, tanpa perlu设置 Pages lagi.
+
+### Kalau mau otomatis update tiap `git push`
+
+Buka repo → **Settings → Pages** → bagian **Build and deployment** → **GitHub Actions** →
+pilih **Static HTML → Configure**. Workflow otomatis dibuat, lalu setiap push akan
+menjalankan build + deploy. Gratis, unlimited.
+
+---
+
+### Alternatif hosting gratis
+
+| Layanan | URL yang didapat | Catatan |
+|---|---|---|
+| **GitHub Pages** | `fadhilrezam.github.io` | 100 GB/月,带宽 100 GB/bulan. Dipakai sekarang. |
+| Netlify | `nama-situs.netlify.app` | Drag-and-drop, TLS gratis, domain gratis |
+| Cloudflare Pages | `nama-situs.pages.dev` | Unlimited bandwidth, deploy dari GitHub juga |
+| Vercel | `nama-situs.vercel.app` | Paling cepat untuk Next.js, tapi untuk HTML statis berlebihan |
+
+Semua gratis dan cukup untuk website portofolio. Kalau nanti pindah, cukup ubah satu file
+(`index.html` bagian canonical + `og:url`).
 
 Seret folder `portfolio` ke [app.netlify.com/drop](https://app.netlify.com/drop),
 atau hubungkan repo GitHub. Tidak perlu build command, publish directory = `.`.
