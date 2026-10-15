@@ -59,31 +59,20 @@ const PORTFOLIO = {
         "Python",
         "Streamlit",
         "Tableau",
-        "Looker Studio",
         "KPI Dashboards"
       ]
     },
     {
-      group: { id: "Data Engineering", en: "Data Engineering" },
+      group: { id: "Applied AI", en: "Applied AI" },
       items: [
-        "Kafka (Real-time Streaming)",
-        "ETL / ELT Pipelines",
-        "PostgreSQL",
-        "MySQL",
+        "ML & DL",
+        "RAG",
         "Docker",
-        "Git"
-      ]
-    },
-    {
-      group: { id: "Fraud, Risk & ML", en: "Fraud, Risk & ML" },
-      items: [
-        "TigerGraph / GSQL",
+        "Deployment",
+        "Database",
         "AML Transaction Detection",
-        "Scikit-learn",
-        "TensorFlow",
-        "MLflow",
-        "YOLOv5 Computer Vision",
-        "Flask Deployment"
+        "Kafka (Real-time Streaming)",
+        "ETL / ELT Pipelines"
       ]
     },
     {
@@ -93,8 +82,6 @@ const PORTFOLIO = {
         "Invoice-to-RAB Reconciliation",
         "Excel Automation",
         "Tender Documentation",
-        "E-Katalog",
-        "Contract Compliance",
         "Progress Reporting"
       ]
     }
