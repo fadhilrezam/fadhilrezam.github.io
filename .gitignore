@@ -1,0 +1,25 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Berkas lokal / rahasia
+.env
+.env.*
+*.local
+
+# File sementara saat preview
+_preview.html
+_probe.html
+
+# Aset besar (opsional — hapus tanda komentar kalau memang mau ikut ter-deploy)
+# *.pdf
+# *.jpg
+# *.png
