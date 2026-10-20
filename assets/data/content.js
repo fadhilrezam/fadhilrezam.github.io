@@ -95,35 +95,46 @@ const PORTFOLIO = {
       role: { id: "Data Scientist", en: "Data Scientist" },
       period: "Jun 2022 – Jun 2024",
       location: "Jakarta, Indonesia",
+      scope: {
+        id: "Membangun pipeline data real-time, sistem deteksi fraud berbasis graph, computer vision, dan dashboard analitik untuk perbankan dan fintech.",
+        en: "Built real-time data pipelines, graph-based fraud detection, computer vision, and analytics dashboards for banking and fintech."
+      },
       tags: ["Kafka", "TigerGraph", "YOLOv5", "Streamlit", "Docker"],
       bullets: [
         {
-          id: "Membangun dan meng-deploy pipeline data end-to-end untuk streaming dan pemrosesan data real-time menggunakan Python, Kafka, dan SQL, sehingga ingestion dan transformasi data berjalan otomatis untuk kebutuhan analitik.",
-          en: "Built and deployed end-to-end data pipelines for real-time streaming and processing using Python, Kafka, and SQL databases, enabling automated data ingestion and transformation for analytics workloads."
+          lead: { id: "Membangun pipeline data end-to-end", en: "Built end-to-end data pipelines" },
+          id: "untuk streaming dan pemrosesan data real-time menggunakan Python, Kafka, dan SQL, sehingga ingestion dan transformasi data berjalan otomatis untuk kebutuhan analitik.",
+          en: "for real-time streaming and processing using Python, Kafka, and SQL databases, enabling automated data ingestion and transformation for analytics workloads."
         },
         {
-          id: "Mengembangkan dashboard interaktif dengan Python dan Streamlit untuk memantau aktivitas mesin dan pengguna secara real-time, menyajikan insight yang dapat ditindaklanjuti bagi stakeholder di 3 unit bisnis.",
-          en: "Developed and maintained interactive dashboards using Python and Streamlit to monitor machine and user activity in real time, delivering actionable insights to stakeholders across 3 business units."
+          lead: { id: "Mengembangkan dashboard interaktif", en: "Developed interactive dashboards" },
+          id: "dengan Python dan Streamlit untuk memantau aktivitas mesin dan pengguna secara real-time, menyajikan insight yang dapat ditindaklanjuti bagi stakeholder di 3 unit bisnis.",
+          en: "with Python and Streamlit to monitor machine and user activity in real time, delivering actionable insights to stakeholders across 3 business units."
         },
         {
-          id: "Membangun sistem deteksi money laundering berbasis graph database TigerGraph dengan query language GSQL, menandai sekitar 6% transaksi sebagai transaksi mencurigakan setiap bulan untuk keperluan compliance reporting.",
-          en: "Engineered a money laundering detection system using the TigerGraph graph database and GSQL, flagging approximately 6% of total transactions as suspicious monthly to support compliance reporting."
+          lead: { id: "Membangun sistem deteksi money laundering berbasis graph database TigerGraph", en: "Engineered a graph-based money laundering detection system" },
+          id: "dengan query language GSQL, menandai sekitar **6% transaksi** sebagai transaksi mencurigakan setiap bulan untuk keperluan compliance reporting.",
+          en: "using the TigerGraph graph database and GSQL, flagging approximately **6% of transactions** as suspicious monthly to support compliance reporting."
         },
         {
-          id: "Mengimplementasikan solusi computer vision untuk object detection, face recognition, dan liveness detection menggunakan deep learning (YOLOv5, TensorFlow) yang meningkatkan akurasi verifikasi identitas.",
-          en: "Implemented computer vision solutions for object detection, face recognition, and liveness detection using deep learning algorithms (YOLOv5, TensorFlow), improving identity verification accuracy."
+          lead: { id: "Mengimplementasikan solusi computer vision", en: "Implemented computer vision solutions" },
+          id: "untuk object detection, face recognition, dan liveness detection menggunakan deep learning (YOLOv5, TensorFlow) yang meningkatkan akurasi verifikasi identitas.",
+          en: "for object detection, face recognition, and liveness detection using deep learning algorithms (YOLOv5, TensorFlow), improving identity verification accuracy."
         },
         {
-          id: "Berkomunikasi dengan tim lintas fungsi (Product, Engineering, Risk) untuk menentukan kebutuhan data dan menerjemahkan masalah bisnis menjadi solusi analitik.",
-          en: "Collaborated with cross-functional teams (Product, Engineering, Risk) to define data requirements and translate business problems into analytical solutions."
+          lead: { id: "Berkomunikasi dengan tim lintas fungsi", en: "Collaborated with cross-functional teams" },
+          id: "(Product, Engineering, Risk) untuk menentukan kebutuhan data dan menerjemahkan masalah bisnis menjadi solusi analitik.",
+          en: "(Product, Engineering, Risk) to define data requirements and translate business problems into analytical solutions."
         },
         {
-          id: "Deploy model machine learning ke production menggunakan Flask dan Docker agar konsisten di seluruh environment.",
-          en: "Deployed machine learning models to production using Flask and Docker, ensuring consistent deployment across environments."
+          lead: { id: "Deploy model machine learning ke production", en: "Deployed machine learning models to production" },
+          id: "menggunakan Flask dan Docker agar konsisten di seluruh environment.",
+          en: "using Flask and Docker, ensuring consistent deployment across environments."
         },
         {
-          id: "Membangun pipeline reporting otomatis yang mengurangi beban reporting manual sekitar 40%.",
-          en: "Created automated reporting pipelines that reduced manual reporting effort by approximately 40%."
+          lead: { id: "Membangun pipeline reporting otomatis", en: "Created automated reporting pipelines" },
+          id: "yang mengurangi beban reporting manual sekitar **40%**.",
+          en: "that reduced manual reporting effort by approximately **40%**."
         }
       ]
     },
@@ -132,27 +143,42 @@ const PORTFOLIO = {
       role: { id: "Business Operation Specialist", en: "Business Operation Specialist" },
       period: "Aug 2025 – Present",
       location: "Bandung, Indonesia",
-      tags: ["RAB", "Invoice Reconciliation", "Tender", "E-Katalog", "Progress Reporting"],
+      status: { id: "Posisi Aktif", en: "Current Role" },
+      scope: {
+        id: "Administrasi bisnis penuh untuk proyek konstruksi dan mining: dokumen tender, estimasi biaya, administrasi kontrak, penagihan, dan rekonsiliasi invoice dengan otomatisasi Excel dan AI.",
+        en: "Full business administration for construction and mining projects: tender documentation, cost estimation, contract administration, invoicing, and invoice reconciliation with Excel automation and AI."
+      },
+      tags: ["RAB", "BOQ", "Tender", "E-Katalog", "Contract Admin", "Excel Automation", "AI Workflow"],
       bullets: [
         {
-          id: "Menyusun dan memelihara rencana anggaran biaya (RAB) proyek serta memantau pengeluaran harian agar tetap sesuai batasan anggaran.",
-          en: "Design and maintain project budget plans (RAB) and track daily expenses to ensure adherence to budget constraints."
+          lead: { id: "Mengembangkan dan menyusun dokumen tender", en: "Develop and deliver tender documents" },
+          id: "memastikan keselarasan penuh dengan kebutuhan dan spesifikasi proyek.",
+          en: "ensuring full alignment with project requirements and specifications."
         },
         {
-          id: "Melakukan rekonsiliasi invoice terhadap RAB agar penggunaan dana terdokumentasi dan dapat diaudit.",
-          en: "Reconcile invoices against the RAB so fund usage stays documented and auditable."
+          lead: { id: "Membangun rincian volume pekerjaan (BOQ) dan estimasi biaya proyek (RAB)", en: "Build detailed bills of quantities and cost estimates (RAB)" },
+          id: "untuk sektor konstruksi.",
+          en: "for construction projects."
         },
         {
-          id: "Menyiapkan dan merapikan dokumen teknis serta administratif untuk proses tender, termasuk input item jasa ke dalam sistem E-Katalog.",
-          en: "Prepare and organize technical and administrative documentation for tender processes, including entering service items into the E-Katalog system."
+          lead: { id: "Mengelola kontrak", en: "Administer contracts" },
+          id: "mengalokasikan volume pekerjaan ke milestone pembayaran dan menyusun laporan progres yang menjadi dasar penagihan (invoicing) klien.",
+          en: "allocating work volumes across payment milestones and producing progress reports that drive client invoicing."
         },
         {
-          id: "Menggabungkan laporan progres harian dari beberapa site ke dalam satu dashboard agar mudah dipantau stakeholder.",
-          en: "Consolidate daily progress reports from multiple sites into a unified dashboard for stakeholder visibility."
+          lead: { id: "Merekonsiliasi invoice terhadap estimasi biaya", en: "Reconcile invoices against cost estimates" },
+          id: "untuk mengontrol deviasi dan memastikan akurasi penagihan.",
+          en: "to control deviations and ensure billing accuracy."
         },
         {
-          id: "Mengelola dokumen proyek secara menyeluruh, termasuk dokumen penagihan dan kelengkapan berkas kontrak.",
-          en: "Manage end-to-end project documentation, including billing documents and contract file compliance."
+          lead: { id: "Merancang alur kerja invoicing dan rekonsiliasi berbasis Excel (formula-driven, AI-assisted)", en: "Engineered an Excel-based invoicing and reconciliation workflow (formula-driven, AI-assisted)" },
+          id: "untuk penagihan pemeliharaan kendaraan bermotor **15-50 unit per billing**, mempersingkat waktu proses dari **2-3 hari menjadi di bawah 1 hari** dengan error minimal.",
+          en: "for motor vehicle maintenance billing of **15-50 vehicles (one invoice each) per billing**, cutting turnaround from **2-3 days to under 1 day** with minimal errors."
+        },
+        {
+          lead: { id: "Memanfaatkan AI di seluruh siklus pengembangan dokumen dan cross-checking", en: "Leverage AI across document development and cross-checking" },
+          id: "untuk mempercepat delivery dan mengurangi error.",
+          en: "to accelerate delivery and reduce errors."
         }
       ]
     }

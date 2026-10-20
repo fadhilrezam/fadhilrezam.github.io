@@ -21,6 +21,11 @@
   const esc = (s) =>
     String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+  /** Teks dengan penanda **tebal** -> <strong>. HTML di-escape lebih dulu. */
+  function rich(s) {
+    return esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  }
+
   const ICONS = {
     github: '<path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>',
     linkedin: '<path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14Zm1.78 13.02H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z"/>',
@@ -134,13 +139,24 @@
     $("#experienceList").innerHTML = p.experience
       .map(
         (job) => `<article class="job reveal">
-            <div class="job__top">
+            <div class="job__head">
               <h3 class="job__role">${esc(t(job.role))}</h3>
-              <span class="job__period">${esc(job.period)}</span>
+              <div class="job__meta">
+                ${job.status ? `<span class="job__status">${esc(t(job.status))}</span>` : ""}
+                <span class="job__period">${esc(job.period)}</span>
+              </div>
             </div>
             <p class="job__company">${esc(job.company)} · ${esc(job.location)}</p>
+            ${job.scope ? `<p class="job__scope">${esc(t(job.scope))}</p>` : ""}
             <ul class="job__bullets">
-              ${job.bullets.map((b) => `<li>${esc(t(b))}</li>`).join("")}
+              ${
+                job.bullets
+                  .map((b) => {
+                    const lead = b.lead ? `<strong>${esc(t(b.lead))}</strong> — ` : "";
+                    return `<li>${lead}${rich(t(b))}</li>`;
+                  })
+                  .join("")
+              }
             </ul>
             <ul class="job__tags">${(job.tags || []).map((tg) => `<li>${esc(tg)}</li>`).join("")}</ul>
           </article>`
