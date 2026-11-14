@@ -243,26 +243,46 @@
         .join("");
     }
 
-    /* -- skills + education -- */
+    /* -- skills -- */
     const skillsGrid = $("#skillsGrid");
     if (skillsGrid) {
-      const skillCards = p.skills.map(
-        (g) => `<article class="tool-card reveal">
+      skillsGrid.innerHTML = p.skills
+        .map(
+          (g) => `<article class="tool-card reveal">
             <h3>${esc(t(g.group))}</h3>
             <ul class="tool-card__tags">${g.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>
           </article>`
-      );
+        )
+        .join("");
+    }
 
-      const educationCards = (p.education || []).map(
-        (e, i) => `<article class="tool-card tool-card--education reveal"${i === 0 ? ' id="education"' : ""}>
-            <h3>${esc(t(e.degree))}</h3>
-            <p class="tool-card__degree">${esc(e.school)}</p>
-            <p class="tool-card__meta">${esc(e.location)}${e.period ? " · " + esc(e.period) : ""}</p>
-            <p class="tool-card__meta">${esc(t(e.detail))}</p>
+    /* -- education -- */
+    const educationList = $("#educationList");
+    if (educationList) {
+      educationList.innerHTML = (p.education || [])
+        .map(
+          (e) => `<article class="edu-card reveal">
+            <div class="edu-card__main">
+              <h3 class="edu-card__degree">${esc(t(e.degree))}</h3>
+              <p class="edu-card__school">${esc(e.school)}</p>
+            </div>
+            <dl class="edu-card__meta">
+              <div>
+                <dt class="edu-card__label">${esc(t({ id: "Lokasi", en: "Location" }))}</dt>
+                <dd>${esc(e.location)}</dd>
+              </div>
+              <div>
+                <dt class="edu-card__label">${esc(t({ id: "Periode", en: "Period" }))}</dt>
+                <dd>${esc(e.period || t({ id: "—", en: "—" }))}</dd>
+              </div>
+              <div>
+                <dt class="edu-card__label">${esc(t({ id: "Keterangan", en: "Detail" }))}</dt>
+                <dd>${esc(t(e.detail))}</dd>
+              </div>
+            </dl>
           </article>`
-      );
-
-      skillsGrid.innerHTML = skillCards.concat(educationCards).join("");
+        )
+        .join("");
     }
 
     /* -- experience + certifications -- */
@@ -311,35 +331,21 @@
     if (projectsGrid) {
       projectsGrid.innerHTML = p.projects
         .map((pr, i) => {
-          const category = pr.category ? t(pr.category) : "";
-          const mark = String(pr.title || "")
-            .split(/\s+/)
-            .map((w) => w[0])
-            .join("")
-            .slice(0, 3)
-            .toUpperCase();
-
           return `<article class="project-card reveal">
-              <div class="project-card__cover" aria-hidden="true">
-                <span class="project-card__cover-index">${String(i + 1).padStart(2, "0")}</span>
-                <span class="project-card__cover-mark">${esc(mark)}</span>
-                <span class="project-card__cover-category">${esc(category)}</span>
+              <div class="project-card__top">
+                <span class="project-card__index">${String(i + 1).padStart(2, "0")}</span>
+                <span class="project-card__period">${esc(pr.period)}</span>
               </div>
-              <div class="project-card__body">
-                <div class="project-card__head">
-                  <h3 class="project-card__title">${esc(pr.title)}</h3>
-                  <span class="project-card__period">${esc(pr.period)}</span>
-                </div>
-                <p class="project-card__desc">${esc(t(pr.description))}</p>
-                <ul class="project-card__stack">${pr.stack.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
-                ${
-                  pr.links && pr.links.length
-                    ? `<div class="project-card__links">${pr.links
-                        .map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${icon(l.icon)} ${esc(l.label)}</a>`)
-                        .join("")}</div>`
-                    : ""
-                }
-              </div>
+              <h3 class="project-card__title">${esc(pr.title)}</h3>
+              <p class="project-card__desc">${esc(t(pr.description))}</p>
+              <ul class="project-card__stack">${pr.stack.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+              ${
+                pr.links && pr.links.length
+                  ? `<div class="project-card__links">${pr.links
+                      .map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${icon(l.icon)} ${esc(l.label)}</a>`)
+                      .join("")}</div>`
+                  : ""
+              }
             </article>`;
         })
         .join("");
@@ -509,7 +515,7 @@
       const data = Object.fromEntries(new FormData(form).entries());
 
       if (!data.name || !data.email || !data.message) {
-        note.textContent = t(ui.error);
+        note.textContent = t(ui.required || ui.error);
         note.className = "form__note is-error";
         return;
       }

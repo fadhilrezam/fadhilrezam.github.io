@@ -174,12 +174,39 @@
           </div>
         </div>
 
-        <div id="skills">
-          <div class="toolbox" id="skillsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ================= KEKUATAN UTAMA ================= -->
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-head__title" data-section="skillsHeading"></h2>
+          <span class="section-head__rule" aria-hidden="true"></span>
         </div>
-        <div id="experience">
-          <div class="experience" id="experienceList"></div>
+        <div class="toolbox" id="skillsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ================= PENGALAMAN KERJA ================= -->
+    <section class="section" id="experience">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-head__title" data-section="experienceHeading"></h2>
+          <span class="section-head__rule" aria-hidden="true"></span>
         </div>
+        <div class="experience" id="experienceList"></div>
+      </div>
+    </section>
+
+    <!-- ================= PENDIDIKAN ================= -->
+    <section class="section" id="education">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-head__title" data-section="educationHeading"></h2>
+          <span class="section-head__rule" aria-hidden="true"></span>
+        </div>
+        <div class="education" id="educationList"></div>
       </div>
     </section>
 
@@ -215,7 +242,7 @@
               <textarea id="message" name="message" rows="5" required data-i18n-placeholder="contact.messagePh"></textarea>
             </div>
             <button type="submit" class="btn btn--primary" id="submitBtn" data-i18n="contact.submit">Send Message</button>
-            <p class="form__note" id="formNote"></p>
+            <p class="form__note" id="formNote" role="status" aria-live="polite"></p>
           </form>
 
           <aside class="contact__aside reveal">

@@ -317,6 +317,10 @@ const PORTFOLIO = {
         id: "Gagal mengirim pesan. Silakan coba lagi atau kirim langsung ke email saya.",
         en: "Failed to send. Please try again or email me directly."
       },
+      required: {
+        id: "Mohon lengkapi nama, email, dan pesan.",
+        en: "Please fill in your name, email, and message."
+      },
       fallback: {
         id: "Form belum dikonfigurasi — pesan Anda akan dibuka di aplikasi email.",
         en: "Form is not configured yet — your message will open in your email app."
