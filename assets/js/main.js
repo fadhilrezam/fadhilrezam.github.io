@@ -1,5 +1,5 @@
 /* =============================================================================
- * main.js — render konten, ganti bahasa, animasi scroll, nav, form kontak.
+ * main.js — render konten, ganti bahasa, tema, animasi scroll, nav, form kontak.
  * Depends on: PORTFOLIO (assets/data/content.js)
  * ============================================================================= */
 (function () {
@@ -9,7 +9,7 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  const currentLang = () => document.documentElement.lang === "id" ? "id" : "en";
+  const currentLang = () => (document.documentElement.lang === "id" ? "id" : "en");
 
   /** Ambil teks sesuai bahasa aktif; fallback ke bahasa lain bila kosong. */
   function t(node) {
@@ -34,13 +34,24 @@
     whatsapp: '<path d="M12 2a9.9 9.9 0 0 0-8.5 15L2 22l5.2-1.4A9.9 9.9 0 1 0 12 2Zm5.8 14.1c-.25.7-1.44 1.33-1.98 1.38-.53.05-1.03.23-3.5-.73-2.96-1.16-4.85-4.2-5-4.4-.14-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.45.27-.3.58-.37.78-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.06.92 2.21.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.24 1.62 2 1.12.99 2.06 1.3 2.35 1.45.3.15.47.13.64-.08.17-.2.74-.86.93-1.16.2-.3.4-.25.67-.15.27.1 1.7.8 1.99.95.3.15.5.22.57.35.07.12.07.7-.17 1.4Z"/>',
     external: '<path d="M14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3h-7ZM5 5h5V3H3v18h18v-7h-2v5H5V5Z"/>'
   };
-  const icon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.external}</svg>`;
+
+  const icon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONS[name] || ICONS.external}</svg>`;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ------------------------------------------------------------- language */
+  function storedLang() {
+    try {
+      const saved = localStorage.getItem("portfolio-lang");
+      if (saved === "id" || saved === "en") return saved;
+    } catch (_) {}
+    return "en";
+  }
+
   function setLanguage(lang, persist) {
     document.documentElement.lang = lang;
-    $$("#langSwitch .lang-switch__opt").forEach((el) => {
-      el.classList.toggle("is-active", el.textContent.trim().toLowerCase() === lang);
+    $$("[data-lang-opt]").forEach((el) => {
+      el.classList.toggle("is-active", el.dataset.langOpt === lang);
     });
     render();
     if (persist) {
@@ -48,15 +59,74 @@
     }
   }
 
-  function storedLang() {
+  /* ---------------------------------------------------------------- theme */
+  function storedTheme() {
     try {
-      const saved = localStorage.getItem("portfolio-lang");
-      if (saved === "id" || saved === "en") return saved;
+      const saved = localStorage.getItem("portfolio-theme");
+      if (saved === "dark" || saved === "light") return saved;
     } catch (_) {}
-    return "en"; // default: English (ubah ke "id" bila ingin Bahasa Indonesia)
+    return "light";
+  }
+
+  function syncThemeLabels() {
+    const theme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+    const ui = PORTFOLIO.ui;
+    const nextLabel = theme === "light" ? t(ui.theme.dark) : t(ui.theme.light);
+
+    $$("[data-theme-label]").forEach((el) => {
+      el.textContent = nextLabel;
+    });
+
+    $$("[data-theme-toggle]").forEach((btn) => {
+      btn.setAttribute("aria-label", nextLabel);
+      btn.setAttribute("aria-pressed", String(theme === "dark"));
+    });
+  }
+
+  function setTheme(theme, persist) {
+    const next = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = next;
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", next === "dark" ? "#0a0a0a" : "#ffffff");
+
+    syncThemeLabels();
+    if (persist) {
+      try { localStorage.setItem("portfolio-theme", next); } catch (_) {}
+    }
+  }
+
+  function initTheme() {
+    setTheme(storedTheme(), false);
+    $$("[data-theme-toggle]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        setTheme(next, true);
+      });
+    });
+  }
+
+  function initLanguage() {
+    setLanguage(storedLang(), false);
+    $$("[data-lang-toggle]").forEach((btn) => {
+      btn.addEventListener("click", () => setLanguage(currentLang() === "id" ? "en" : "id", true));
+    });
+  }
+
+  /* --------------------------------------------------------------- helpers */
+  function socialMarkup(links) {
+    return (links || [])
+      .map((l) => {
+        const external = /^https?:/.test(l.url) ? ' target="_blank" rel="noopener"' : "";
+        return `<a href="${esc(l.url)}" title="${esc(l.label)}" aria-label="${esc(l.label)}"${external}>${icon(l.icon)}</a>`;
+      })
+      .join("");
   }
 
   /* --------------------------------------------------------------- render */
+  let revealObserver = null;
+  let sectionObserver = null;
+
   function render() {
     const p = PORTFOLIO;
     const ui = p.ui;
@@ -70,258 +140,353 @@
       if (text) el.textContent = text;
     });
 
+    $$("[data-i18n-placeholder]").forEach((el) => {
+      const path = el.dataset.i18nPlaceholder.split(".");
+      let val = ui;
+      for (const key of path) val = val && val[key];
+      const text = t(val);
+      if (text) el.setAttribute("placeholder", text);
+    });
+
     /* -- judul section (data-section="aboutHeading" dst) -- */
     $$("[data-section]").forEach((el) => {
       el.textContent = t(p[el.dataset.section]);
     });
 
+    /* -- identitas -- */
+    $$("[data-brand-initials]").forEach((el) => { el.textContent = p.profile.initials + "."; });
+    $$("[data-brand-name]").forEach((el) => { el.textContent = p.profile.name; });
+    const year = $("#year");
+    if (year) year.textContent = new Date().getFullYear();
+    const footerName = $("#footerName");
+    if (footerName) footerName.textContent = p.profile.name;
+
     /* -- hero -- */
-    $("#brandInitials").textContent = p.profile.initials;
-    $("#heroRoles").textContent = p.profile.roles.map(t).join("  |  ");
-    $("#heroTagline").textContent = t(p.profile.tagline);
-    $("#heroLocation").textContent = p.profile.location;
+    const primaryRole = p.profile.roles[0];
+    const secondaryRole = p.profile.roles[1];
+    const rolePrimary = $("#heroRolePrimary");
+    const roleSecondary = $("#heroRoleSecondary");
+    if (rolePrimary) rolePrimary.textContent = t(primaryRole);
+    if (roleSecondary) {
+      roleSecondary.textContent = secondaryRole ? t(secondaryRole) : "";
+      roleSecondary.hidden = !secondaryRole;
+    }
+
+    const tagline = $("#heroTagline");
+    if (tagline) tagline.textContent = t(p.profile.tagline);
+
+    const location = $("#heroLocation");
+    if (location) location.textContent = p.profile.location;
+
     const heroPhone = $("#heroPhone");
-    heroPhone.textContent = p.profile.phone;
-    heroPhone.href = "tel:" + p.profile.phone.replace(/[^0-9+]/g, "");
+    if (heroPhone) {
+      heroPhone.textContent = p.profile.phone;
+      heroPhone.href = "tel:" + p.profile.phone.replace(/[^0-9+]/g, "");
+    }
+
     const heroEmail = $("#heroEmail");
-    heroEmail.textContent = p.profile.email;
-    heroEmail.href = "mailto:" + p.profile.email;
+    if (heroEmail) {
+      heroEmail.textContent = p.profile.email;
+      heroEmail.href = "mailto:" + p.profile.email;
+    }
 
-    $("#heroSocial").innerHTML = p.profile.links
-      .map((l) => `<a href="${esc(l.url)}" title="${esc(l.label)}" aria-label="${esc(l.label)}" target="_blank" rel="noopener">${icon(l.icon)}</a>`)
-      .join("");
+    const heroSocial = $("#heroSocial");
+    if (heroSocial) heroSocial.innerHTML = socialMarkup(p.profile.links);
 
-    /* -- about -- */
+    /* -- about / bio -- */
     const aboutText = $("#aboutText");
-    aboutText.innerHTML = "";
-    const lead = document.createElement("p");
-    lead.className = "lead";
-    lead.textContent = t(p.about.lead);
-    aboutText.appendChild(lead);
-    p.about.paragraphs.forEach((para) => {
-      const el = document.createElement("p");
-      el.textContent = t(para);
-      aboutText.appendChild(el);
-    });
+    if (aboutText) {
+      aboutText.innerHTML = "";
+      const lead = document.createElement("p");
+      lead.className = "lead";
+      lead.textContent = t(p.about.lead);
+      aboutText.appendChild(lead);
 
-    $("#aboutStats").innerHTML = p.about.stats
-      .map(
-        (s) => `<div class="stat">
-                  <div class="stat__value">${esc(s.value)}</div>
-                  <div class="stat__label">${esc(t(s.label))}</div>
-                </div>`
-      )
-      .join("");
+      (p.about.paragraphs || []).forEach((para) => {
+        const el = document.createElement("p");
+        el.textContent = t(para);
+        aboutText.appendChild(el);
+      });
+    }
+
+    const aboutEmail = $("#aboutEmail");
+    if (aboutEmail) {
+      aboutEmail.textContent = t(ui.about.emailMe);
+      aboutEmail.href = "mailto:" + p.profile.email;
+    }
 
     const cv = $("#cvLink");
-    if (window.CV_URL) {
-      cv.href = window.CV_URL;
-      cv.setAttribute("download", "");
-      cv.classList.remove("is-hidden");
-    } else {
-      cv.remove();
+    if (cv) {
+      if (window.CV_URL) {
+        cv.href = window.CV_URL;
+        cv.setAttribute("download", "");
+        cv.hidden = false;
+      } else {
+        cv.hidden = true;
+        cv.removeAttribute("href");
+      }
     }
-    const aboutEmail = $("#aboutEmail");
-    aboutEmail.textContent = t(ui.about.emailMe);
-    aboutEmail.href = "mailto:" + p.profile.email;
 
-    /* -- skills -- */
-    $("#skillsGrid").innerHTML = p.skills
-      .map(
-        (g) => `<article class="skill-group reveal">
-                  <h3>${esc(t(g.group))}</h3>
-                  <ul class="skill-tags">${g.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>
-                </article>`
-      )
-      .join("");
-
-    /* -- experience -- */
-    $("#experienceList").innerHTML = p.experience
-      .map(
-        (job) => `<article class="job reveal">
-            <div class="job__head">
-              <h3 class="job__role">${esc(t(job.role))}</h3>
-              <div class="job__meta">
-                ${job.status ? `<span class="job__status">${esc(t(job.status))}</span>` : ""}
-                <span class="job__period">${esc(job.period)}</span>
+    /* -- stats / highlights -- */
+    const statsGrid = $("#statsGrid");
+    if (statsGrid) {
+      statsGrid.innerHTML = p.about.stats
+        .map(
+          (s, i) => `<article class="stat-card reveal">
+              <div class="stat-card__panel">
+                <span class="stat-card__index">${String(i + 1).padStart(2, "0")}</span>
+                <strong class="stat-card__value">${esc(s.value)}</strong>
               </div>
-            </div>
-            <p class="job__company">${esc(job.company)} · ${esc(job.location)}</p>
-            ${job.scope ? `<p class="job__scope">${esc(t(job.scope))}</p>` : ""}
-            <ul class="job__bullets">
-              ${
-                job.bullets
-                  .map((b) => {
-                    const lead = b.lead ? `<strong>${esc(t(b.lead))}</strong> — ` : "";
-                    return `<li>${lead}${rich(t(b))}</li>`;
-                  })
-                  .join("")
-              }
-            </ul>
-            <ul class="job__tags">${(job.tags || []).map((tg) => `<li>${esc(tg)}</li>`).join("")}</ul>
+              <p class="stat-card__label">${esc(t(s.label))}</p>
+            </article>`
+        )
+        .join("");
+    }
+
+    /* -- skills + education -- */
+    const skillsGrid = $("#skillsGrid");
+    if (skillsGrid) {
+      const skillCards = p.skills.map(
+        (g) => `<article class="tool-card reveal">
+            <h3>${esc(t(g.group))}</h3>
+            <ul class="tool-card__tags">${g.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>
           </article>`
-      )
-      .join("");
+      );
+
+      const educationCards = (p.education || []).map(
+        (e, i) => `<article class="tool-card tool-card--education reveal"${i === 0 ? ' id="education"' : ""}>
+            <h3>${esc(t(e.degree))}</h3>
+            <p class="tool-card__degree">${esc(e.school)}</p>
+            <p class="tool-card__meta">${esc(e.location)}${e.period ? " · " + esc(e.period) : ""}</p>
+            <p class="tool-card__meta">${esc(t(e.detail))}</p>
+          </article>`
+      );
+
+      skillsGrid.innerHTML = skillCards.concat(educationCards).join("");
+    }
+
+    /* -- experience + certifications -- */
+    const experienceList = $("#experienceList");
+    if (experienceList) {
+      const jobCards = p.experience.map(
+        (job) => `<article class="exp-box reveal">
+            <h3 class="exp-box__title">${esc(t(job.role))}</h3>
+            <p class="exp-box__meta">${esc(job.company)} · ${esc(job.location)}</p>
+            <p class="exp-box__meta">${job.status ? `<span class="exp-box__status">${esc(t(job.status))}</span> · ` : ""}${esc(job.period)}</p>
+            ${job.scope ? `<p class="exp-box__scope">${esc(t(job.scope))}</p>` : ""}
+            <ul class="exp-box__list">
+              ${job.bullets
+                .map((b) => {
+                  const lead = b.lead ? `<strong>${esc(t(b.lead))}</strong> — ` : "";
+                  return `<li>${lead}${rich(t(b))}</li>`;
+                })
+                .join("")}
+            </ul>
+            ${(job.tags || []).length ? `<ul class="exp-box__tags">${job.tags.map((tg) => `<li>${esc(tg)}</li>`).join("")}</ul>` : ""}
+          </article>`
+      );
+
+      const certCard = `<article class="exp-box exp-box--certs reveal">
+          <h3 class="exp-box__title">${esc(t(p.certHeading))}</h3>
+          <ul class="exp-box__list exp-box__list--certs">
+            ${p.certifications
+              .map(
+                (c) => `<li>
+                    <strong>${esc(c.name)}</strong>
+                    <span class="exp-box__cert-meta">${esc(c.issuer)}${c.year && c.year !== "—" ? " · " + esc(c.year) : ""}</span>
+                  </li>`
+              )
+              .join("")}
+          </ul>
+        </article>`;
+
+      experienceList.innerHTML = jobCards.concat(certCard).join("");
+    }
 
     /* -- projects -- */
-    $("#projectsSub").textContent = t(p.projectsSub);
-    $("#projectsGrid").innerHTML = p.projects
-      .map(
-        (pr) => `<article class="card reveal">
-            <div class="card__head">
-              <h3 class="card__title">${esc(pr.title)}</h3>
-              <span class="card__period">${esc(pr.period)}</span>
-            </div>
-            <p class="card__desc">${esc(t(pr.description))}</p>
-            <ul class="card__stack">${pr.stack.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
-            ${
-              pr.links && pr.links.length
-                ? `<div class="card__links">${pr.links
-                    .map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${icon(l.icon)} ${esc(l.label)}</a>`)
-                    .join("")}</div>`
-                : ""
-            }
-          </article>`
-      )
-      .join("");
+    const projectsSub = $("#projectsSub");
+    if (projectsSub) projectsSub.textContent = t(p.projectsSub);
 
-    /* -- education -- */
-    $("#educationList").innerHTML = p.education
-      .map(
-        (e) => `<article class="edu reveal">
-            <h3 class="edu__degree">${esc(t(e.degree))}</h3>
-            <p class="edu__school">${esc(e.school)} · ${esc(e.location)}</p>
-            <div class="edu__meta">
-              ${e.period ? `<span>${esc(e.period)}</span>` : ""}
-              <span>${esc(t(e.detail))}</span>
-            </div>
-          </article>`
-      )
-      .join("");
+    const projectsGrid = $("#projectsGrid");
+    if (projectsGrid) {
+      projectsGrid.innerHTML = p.projects
+        .map((pr, i) => {
+          const category = pr.category ? t(pr.category) : "";
+          const mark = String(pr.title || "")
+            .split(/\s+/)
+            .map((w) => w[0])
+            .join("")
+            .slice(0, 3)
+            .toUpperCase();
 
-    /* -- certifications -- */
-    $("#certList").innerHTML = p.certifications
-      .map(
-        (c) => `<li>
-            <span class="cert__icon">${icon("external").replace("<svg ", "<svg width='15' height='15' ")}</span>
-            <span>
-              <span class="cert__name">${esc(c.name)}</span><br />
-              <span class="cert__issuer">${esc(c.issuer)}${c.year && c.year !== "—" ? " · " + esc(c.year) : ""}</span>
-            </span>
-          </li>`
-      )
-      .join("");
+          return `<article class="project-card reveal">
+              <div class="project-card__cover" aria-hidden="true">
+                <span class="project-card__cover-index">${String(i + 1).padStart(2, "0")}</span>
+                <span class="project-card__cover-mark">${esc(mark)}</span>
+                <span class="project-card__cover-category">${esc(category)}</span>
+              </div>
+              <div class="project-card__body">
+                <div class="project-card__head">
+                  <h3 class="project-card__title">${esc(pr.title)}</h3>
+                  <span class="project-card__period">${esc(pr.period)}</span>
+                </div>
+                <p class="project-card__desc">${esc(t(pr.description))}</p>
+                <ul class="project-card__stack">${pr.stack.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+                ${
+                  pr.links && pr.links.length
+                    ? `<div class="project-card__links">${pr.links
+                        .map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${icon(l.icon)} ${esc(l.label)}</a>`)
+                        .join("")}</div>`
+                    : ""
+                }
+              </div>
+            </article>`;
+        })
+        .join("");
+    }
 
     /* -- contact -- */
-    $("#contactLead").textContent = t(p.contactLead);
-    $("#contactMail").textContent = p.profile.email;
-    $("#contactMail").href = "mailto:" + p.profile.email;
-    $("#contactWa").textContent = p.profile.phone;
-    $("#contactWa").href = "https://wa.me/" + p.profile.whatsapp;
-    $("#contactLocation").textContent = p.profile.location;
-    $("#footerName").textContent = p.profile.name;
-    $("#formNote").textContent = "";
+    const contactLead = $("#contactLead");
+    if (contactLead) contactLead.textContent = t(p.contactLead);
 
+    const contactMail = $("#contactMail");
+    if (contactMail) {
+      contactMail.textContent = p.profile.email;
+      contactMail.href = "mailto:" + p.profile.email;
+    }
+
+    const contactWa = $("#contactWa");
+    if (contactWa) {
+      contactWa.textContent = p.profile.phone;
+      contactWa.href = "https://wa.me/" + p.profile.whatsapp;
+    }
+
+    const contactLocation = $("#contactLocation");
+    if (contactLocation) contactLocation.textContent = p.profile.location;
+
+    const contactSocial = $("#contactSocial");
+    if (contactSocial) contactSocial.innerHTML = socialMarkup(p.profile.links);
+
+    const formNote = $("#formNote");
+    if (formNote) {
+      formNote.textContent = "";
+      formNote.className = "form__note";
+    }
+
+    syncThemeLabels();
     observeReveals();
     observeSections();
   }
 
   /* ------------------------------------------------------ scroll reveal */
-  let revealObserver = null;
   function observeReveals() {
-    if (!("IntersectionObserver" in window)) {
-      $$(".reveal").forEach((el) => el.classList.add("is-visible"));
+    if (revealObserver) {
+      revealObserver.disconnect();
+      revealObserver = null;
+    }
+
+    const items = $$(".reveal:not(.is-visible)");
+    if (!items.length) return;
+
+    if (!("IntersectionObserver" in window) || prefersReducedMotion) {
+      items.forEach((el) => el.classList.add("is-visible"));
       return;
     }
-    if (!revealObserver) {
-      revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const delay = Number(entry.target.dataset.revealDelay || 0);
-            setTimeout(() => entry.target.classList.add("is-visible"), delay);
-            revealObserver.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
-      );
-    }
-    $$(".reveal:not(.is-visible)").forEach((el, i) => {
-      if (!el.dataset.revealDelay) {
-        const siblings = el.parentElement ? Array.from(el.parentElement.children).filter((c) => c.classList.contains("reveal")) : [];
-        el.dataset.revealDelay = String(Math.min(siblings.indexOf(el), 5) * 70);
-      }
+
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const delay = Number(entry.target.dataset.revealDelay || 0);
+          window.setTimeout(() => entry.target.classList.add("is-visible"), delay);
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    items.forEach((el, i) => {
+      if (!el.dataset.revealDelay) el.dataset.revealDelay = String((i % 6) * 55);
       revealObserver.observe(el);
     });
   }
 
   /* ------------------------------------------- nav aktif saat di-scroll */
   function observeSections() {
+    if (sectionObserver) {
+      sectionObserver.disconnect();
+      sectionObserver = null;
+    }
+
     const links = $$('#navMenu a[href^="#"]');
     const map = new Map();
+
     links.forEach((a) => {
       const section = document.querySelector(a.getAttribute("href"));
       if (section) map.set(section, a);
     });
+
     if (!map.size || !("IntersectionObserver" in window)) return;
 
-    const spy = new IntersectionObserver(
+    sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          links.forEach((l) => l.classList.remove("is-active"));
+          links.forEach((l) => {
+            l.classList.remove("is-active");
+            l.removeAttribute("aria-current");
+          });
           const link = map.get(entry.target);
-          if (link) link.classList.add("is-active");
+          if (link) {
+            link.classList.add("is-active");
+            link.setAttribute("aria-current", "true");
+          }
         });
       },
-      { rootMargin: "-45% 0px -50% 0px" }
+      { rootMargin: "-35% 0px -55% 0px" }
     );
-    map.forEach((_, section) => spy.observe(section));
+
+    map.forEach((_, section) => sectionObserver.observe(section));
   }
 
   /* ---------------------------------------------------------------- nav */
   function initNav() {
-    const nav = $("#nav");
+    const bar = $("#topbar");
     const toggle = $("#navToggle");
-    const menu = $("#navMenu");
+    const rail = $("#rail");
+    if (!bar || !toggle || !rail) return;
 
-    const onScroll = () => nav.classList.toggle("is-stuck", window.scrollY > 12);
+    const onScroll = () => bar.classList.toggle("is-stuck", window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
+    const close = () => {
+      rail.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", currentLang() === "id" ? "Buka menu" : "Open menu");
+      document.body.classList.remove("nav-open");
+    };
+
     toggle.addEventListener("click", () => {
-      const open = menu.classList.toggle("is-open");
+      const open = !rail.classList.contains("is-open");
+      rail.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open
+        ? (currentLang() === "id" ? "Tutup menu" : "Close menu")
+        : (currentLang() === "id" ? "Buka menu" : "Open menu"));
+      document.body.classList.toggle("nav-open", open);
     });
 
-    menu.addEventListener("click", (e) => {
-      if (e.target.tagName === "A") {
-        menu.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
+    rail.addEventListener("click", (e) => {
+      if (e.target.closest("a")) close();
     });
 
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && menu.classList.contains("is-open")) {
-        menu.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
+      if (e.key === "Escape") close();
     });
-  }
 
-  /* -------------------------------------------------------------- theme */
-  function initTheme() {
-    const btn = $("#themeToggle");
-    let theme;
-    try { theme = localStorage.getItem("portfolio-theme"); } catch (_) {}
-    // Default: "dark" atau "light". Mengikuti pilihan yang disimpan, jika ada.
-    if (theme !== "light" && theme !== "dark") theme = "dark";
-    document.documentElement.dataset.theme = theme;
-
-    btn.addEventListener("click", () => {
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.theme = next;
-      try { localStorage.setItem("portfolio-theme", next); } catch (_) {}
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 1100) close();
     });
   }
 
@@ -330,13 +495,19 @@
     const form = $("#contactForm");
     const note = $("#formNote");
     const btn = $("#submitBtn");
+    if (!form || !note || !btn) return;
+
     const ui = PORTFOLIO.ui.contact;
 
-    form.addEventListener("input", () => (note.textContent = ""));
+    form.addEventListener("input", () => {
+      note.textContent = "";
+      note.className = "form__note";
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form).entries());
+
       if (!data.name || !data.email || !data.message) {
         note.textContent = t(ui.error);
         note.className = "form__note is-error";
@@ -344,6 +515,7 @@
       }
 
       const endpoint = (window.FORMSPREE_ENDPOINT || "").trim();
+
       if (!endpoint || endpoint.startsWith("xxxxxxxx") || !/^https?:/.test(endpoint)) {
         // Belum dikonfigurasi -> buka aplikasi email pengguna
         note.textContent = t(ui.fallback);
@@ -358,6 +530,7 @@
 
       btn.disabled = true;
       btn.textContent = t(ui.sending);
+
       try {
         const res = await fetch(endpoint, {
           method: "POST",
@@ -380,16 +553,10 @@
 
   /* ----------------------------------------------------------------- init */
   function init() {
-    $("#year").textContent = new Date().getFullYear();
-
-    $("#langSwitch").addEventListener("click", () => {
-      setLanguage(currentLang() === "id" ? "en" : "id", true);
-    });
-
     initTheme();
+    initLanguage();
     initNav();
     initContactForm();
-    setLanguage(storedLang(), false);
   }
 
   document.addEventListener("DOMContentLoaded", init);

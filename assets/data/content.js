@@ -33,6 +33,7 @@ const PORTFOLIO = {
   },
 
   aboutHeading: { id: "Latar Belakang", en: "Background" },
+  statsHeading: { id: "Sekilas", en: "At a Glance" },
 
   /* ------------------------------------------------- background / tentang saya */
   about: {
@@ -275,6 +276,7 @@ const PORTFOLIO = {
   ui: {
     skip: { id: "Langsung ke konten utama", en: "Skip to main content" },
     nav: {
+      home: { id: "Beranda", en: "Home" },
       about: { id: "Tentang", en: "About" },
       skills: { id: "Kekuatan", en: "Strengths" },
       experience: { id: "Pengalaman", en: "Experience" },
@@ -319,7 +321,13 @@ const PORTFOLIO = {
         id: "Form belum dikonfigurasi — pesan Anda akan dibuka di aplikasi email.",
         en: "Form is not configured yet — your message will open in your email app."
       },
-      orEmail: { id: "atau langsung kirim ke", en: "or email me at" }
+      orEmail: { id: "atau langsung kirim ke", en: "or email me at" },
+      whatsapp: { id: "WhatsApp", en: "WhatsApp" },
+      location: { id: "Lokasi", en: "Location" }
+    },
+    theme: {
+      dark: { id: "mode gelap.", en: "dark mode." },
+      light: { id: "mode terang.", en: "light mode." }
     },
     footer: {
       rights: { id: "Semua hak dilindungi.", en: "All rights reserved." },
