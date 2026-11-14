@@ -9,12 +9,12 @@ Personal portfolio website, built with plain HTML, CSS, and JavaScript. No frame
 ## Features
 
 - **Bilingual** — Indonesian & English with a navbar toggle; the choice is remembered in `localStorage`
-- **Dark / light theme** — toggle in the navbar, persisted across visits
+- **Dark / light theme** — light by default, toggle in the side rail (desktop) or topbar (mobile), persisted across visits
 - **Scroll reveal** — sections fade in as they enter the viewport
 - **Scroll spy** — the navbar highlights the section you're currently reading
 - **Sections** — background, core strengths, work experience, projects, education, certifications, contact
 - **Contact form** — AJAX submission with a graceful `mailto:` fallback when no backend is configured
-- **Responsive** — mobile-first with a hamburger menu below 780px
+- **Responsive** — collapses to a full-screen menu below 1100px
 - **Accessible** — skip link, ARIA labels, visible focus states, `prefers-reduced-motion` respected
 - **SEO** — meta tags, Open Graph, canonical URL, `robots.txt`, `sitemap.xml`
 - **Zero dependencies** — nothing to install, works offline
@@ -27,7 +27,7 @@ Personal portfolio website, built with plain HTML, CSS, and JavaScript. No frame
 | Styling | CSS custom properties, Grid, Flexbox |
 | Logic | Vanilla JavaScript (ES2015+) |
 | Hosting | GitHub Pages |
-| Typeface | Plus Jakarta Sans + JetBrains Mono |
+| Typeface | Manrope + DotGothic16 |
 
 The whole site is roughly 50 KB before compression — no images, no libraries, no trackers.
 
@@ -79,8 +79,9 @@ tagline: {
 }
 ```
 
-Colors are controlled by CSS custom properties at the top of `assets/css/style.css` —
-change `--accent`, `--accent-2`, and `--bg` to retheme the entire site.
+Colors are controlled by CSS custom properties at the top of `assets/css/style.css`.
+The palette is monochrome — `--bg`, `--text`, `--border`, `--accent` — and the whole
+site retheme from those four tokens. `[data-theme="dark"]` overrides them.
 
 ## Deploying
 
