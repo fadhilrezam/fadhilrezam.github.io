@@ -18,6 +18,15 @@ npm-debug.log*
 # File sementara saat preview
 _preview.html
 _probe.html
+*.log
+
+# Graphify — artefak hasil generate, buat ulang dengan `graphify update .`
+graphify-out/
+
+# Python (skrip bantu lokal)
+__pycache__/
+*.pyc
+.venv/
 
 # Aset besar (opsional — hapus tanda komentar kalau memang mau ikut ter-deploy)
 # *.pdf
