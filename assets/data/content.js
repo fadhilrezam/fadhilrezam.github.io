@@ -39,14 +39,14 @@ const PORTFOLIO = {
   about: {
     lead: {
       id: "Data professional dengan 2 tahun pengalaman di sektor perbankan dan fintech (real-time pipelines, dashboards, fraud detection, ML deployment), serta pengalaman praktis sejak 2025 dalam project budgeting (RAB), invoice reconciliation, dokumentasi tender, dan progress reporting. Menggabungkan keahlian data teknis dengan pengetahuan operasional dan cost control untuk mengubah pertanyaan bisnis menjadi analytics dan decision support.",
-      en: "Data professional with 2 years of experience in banking and fintech (real-time pipelines, dashboards, fraud detection, ML deployment) and hands-on experience since 2025 in project budgeting (RAB), invoice reconciliation, tender documentation, and progress reporting. Combines technical data skills with operational and cost-control knowledge to turn business questions into analytics and decision support."
+      en: "Data professional with 2 years of experience in banking and fintech (real-time pipelines, dashboards, fraud detection, ML deployment) and hands-on experience since 2025 in project budgeting (RAB), invoice reconciliation, tender documentation, and progress reporting. Combines technical data skills with operational and cost-control knowledge to turn business questions into analytics and decisions."
     },
     paragraphs: [],
     stats: [
-      { value: "2+", label: { id: "Tahun di bidang data", en: "Years in data" } },
-      { value: "6%", label: { id: "Transaksi flagged (AML)", en: "Transactions flagged (AML)" } },
-      { value: "40%", label: { id: "Pengurangan reporting manual", en: "Less manual reporting" } },
-      { value: "3", label: { id: "Sertifikat profesional", en: "Professional certifications" } }
+      { value: "2+", label: { id: "Tahun pengalaman data", en: "Years of data experience" } },
+      { value: "6%", label: { id: "Transaksi bulanan ditandai (AML)", en: "Monthly transactions flagged (AML)" } },
+      { value: "50%", label: { id: "Latensi pengiriman data lebih rendah", en: "Lower data delivery latency" } },
+      { value: "15-50", label: { id: "Kendaraan per siklus invoice", en: "Vehicles billed per cycle" } }
     ]
   },
 
@@ -59,21 +59,30 @@ const PORTFOLIO = {
         "SQL",
         "Python",
         "Streamlit",
-        "Tableau",
-        "KPI Dashboards"
+        "Tableau"
       ]
     },
     {
-      group: { id: "Applied AI", en: "Applied AI" },
+      group: { id: "Data Engineering", en: "Data Engineering" },
       items: [
-        "ML & DL",
-        "RAG",
-        "Docker",
-        "Deployment",
-        "Database",
-        "AML Transaction Detection",
         "Kafka (Real-time Streaming)",
-        "ETL / ELT Pipelines"
+        "ETL / ELT Pipelines",
+        "PostgreSQL",
+        "MySQL",
+        "Docker",
+        "Git"
+      ]
+    },
+    {
+      group: { id: "ML dan AI", en: "ML and AI" },
+      items: [
+        "TigerGraph / GSQL",
+        "AML Transaction Detection",
+        "Scikit-learn",
+        "TensorFlow",
+        "MLflow",
+        "Computer Vision",
+        "Flask Deployment"
       ]
     },
     {
@@ -83,6 +92,7 @@ const PORTFOLIO = {
         "Invoice-to-RAB Reconciliation",
         "Excel Automation",
         "Tender Documentation",
+        "Contract Compliance",
         "Progress Reporting"
       ]
     }
@@ -92,64 +102,16 @@ const PORTFOLIO = {
   experienceHeading: { id: "Pengalaman Kerja", en: "Work Experience" },
   experience: [
     {
-      company: "PT. Bringin Inti Teknologi",
-      role: { id: "Data Scientist", en: "Data Scientist" },
-      period: "Jun 2022 – Jun 2024",
-      location: "Jakarta, Indonesia",
-      scope: {
-        id: "Membangun pipeline data real-time, sistem deteksi fraud berbasis graph, computer vision, dan dashboard analitik untuk perbankan dan fintech.",
-        en: "Built real-time data pipelines, graph-based fraud detection, computer vision, and analytics dashboards for banking and fintech."
-      },
-      tags: ["Kafka", "TigerGraph", "YOLOv5", "Streamlit", "Docker"],
-      bullets: [
-        {
-          lead: { id: "Membangun pipeline data end-to-end", en: "Built end-to-end data pipelines" },
-          id: "untuk streaming dan pemrosesan data real-time menggunakan Python, Kafka, dan SQL, sehingga ingestion dan transformasi data berjalan otomatis untuk kebutuhan analitik.",
-          en: "for real-time streaming and processing using Python, Kafka, and SQL databases, enabling automated data ingestion and transformation for analytics workloads."
-        },
-        {
-          lead: { id: "Mengembangkan dashboard interaktif", en: "Developed interactive dashboards" },
-          id: "dengan Python dan Streamlit untuk memantau aktivitas mesin dan pengguna secara real-time, menyajikan insight yang dapat ditindaklanjuti bagi stakeholder di 3 unit bisnis.",
-          en: "with Python and Streamlit to monitor machine and user activity in real time, delivering actionable insights to stakeholders across 3 business units."
-        },
-        {
-          lead: { id: "Membangun sistem deteksi money laundering berbasis graph database TigerGraph", en: "Engineered a graph-based money laundering detection system" },
-          id: "dengan query language GSQL, menandai sekitar **6% transaksi** sebagai transaksi mencurigakan setiap bulan untuk keperluan compliance reporting.",
-          en: "using the TigerGraph graph database and GSQL, flagging approximately **6% of transactions** as suspicious monthly to support compliance reporting."
-        },
-        {
-          lead: { id: "Mengimplementasikan solusi computer vision", en: "Implemented computer vision solutions" },
-          id: "untuk object detection, face recognition, dan liveness detection menggunakan deep learning (YOLOv5, TensorFlow) yang meningkatkan akurasi verifikasi identitas.",
-          en: "for object detection, face recognition, and liveness detection using deep learning algorithms (YOLOv5, TensorFlow), improving identity verification accuracy."
-        },
-        {
-          lead: { id: "Berkomunikasi dengan tim lintas fungsi", en: "Collaborated with cross-functional teams" },
-          id: "(Product, Engineering, Risk) untuk menentukan kebutuhan data dan menerjemahkan masalah bisnis menjadi solusi analitik.",
-          en: "(Product, Engineering, Risk) to define data requirements and translate business problems into analytical solutions."
-        },
-        {
-          lead: { id: "Deploy model machine learning ke production", en: "Deployed machine learning models to production" },
-          id: "menggunakan Flask dan Docker agar konsisten di seluruh environment.",
-          en: "using Flask and Docker, ensuring consistent deployment across environments."
-        },
-        {
-          lead: { id: "Membangun pipeline reporting otomatis", en: "Created automated reporting pipelines" },
-          id: "yang mengurangi beban reporting manual sekitar **40%**.",
-          en: "that reduced manual reporting effort by approximately **40%**."
-        }
-      ]
-    },
-    {
       company: "Private Contractor",
       role: { id: "Business Operation Specialist", en: "Business Operation Specialist" },
       period: "Aug 2025 – Present",
       location: "Bandung, Indonesia",
       status: { id: "Posisi Aktif", en: "Current Role" },
       scope: {
-        id: "Administrasi bisnis penuh untuk proyek konstruksi dan mining: dokumen tender, estimasi biaya, administrasi kontrak, penagihan, dan rekonsiliasi invoice dengan otomatisasi Excel dan AI.",
-        en: "Full business administration for construction and mining projects: tender documentation, cost estimation, contract administration, invoicing, and invoice reconciliation with Excel automation and AI."
+        id: "Dokumentasi tender, estimasi biaya (RAB/BOQ), rekonsiliasi invoice, dan pelaporan progres — dipercepat dengan otomatisasi Excel dan AI.",
+        en: "Tender documentation, cost estimation (RAB/BOQ), invoice reconciliation, and progress reporting — accelerated with Excel automation and AI."
       },
-      tags: ["RAB", "BOQ", "Tender", "E-Katalog", "Contract Admin", "Excel Automation", "AI Workflow"],
+      tags: ["Tender", "RAB", "BOQ", "Invoice Reconciliation", "Progress Reporting", "Excel Automation", "AI Workflow"],
       bullets: [
         {
           lead: { id: "Mengembangkan dan menyusun dokumen tender", en: "Develop and deliver tender documents" },
@@ -157,29 +119,47 @@ const PORTFOLIO = {
           en: "ensuring full alignment with project requirements and specifications."
         },
         {
-          lead: { id: "Membangun rincian volume pekerjaan (BOQ) dan estimasi biaya proyek (RAB)", en: "Build detailed bills of quantities and cost estimates (RAB)" },
-          id: "untuk sektor konstruksi.",
-          en: "for construction projects."
-        },
-        {
-          lead: { id: "Mengelola kontrak", en: "Administer contracts" },
-          id: "mengalokasikan volume pekerjaan ke milestone pembayaran dan menyusun laporan progres yang menjadi dasar penagihan (invoicing) klien.",
-          en: "allocating work volumes across payment milestones and producing progress reports that drive client invoicing."
-        },
-        {
-          lead: { id: "Merekonsiliasi invoice terhadap estimasi biaya", en: "Reconcile invoices against cost estimates" },
-          id: "untuk mengontrol deviasi dan memastikan akurasi penagihan.",
-          en: "to control deviations and ensure billing accuracy."
+          lead: { id: "Membangun rincian volume pekerjaan (BOQ) dan estimasi biaya (RAB)", en: "Build detailed bills of quantities and cost estimates (RAB)" },
+          id: "untuk pemeliharaan kendaraan.",
+          en: "for vehicle maintenance."
         },
         {
           lead: { id: "Merancang alur kerja invoicing dan rekonsiliasi berbasis Excel (formula-driven, AI-assisted)", en: "Engineered an Excel-based invoicing and reconciliation workflow (formula-driven, AI-assisted)" },
-          id: "untuk penagihan pemeliharaan kendaraan bermotor **15-50 unit per billing**, mempersingkat waktu proses dari **2-3 hari menjadi di bawah 1 hari** dengan error minimal.",
+          id: "untuk penagihan pemeliharaan kendaraan bermotor **15-50 unit (satu invoice per unit) per billing**, mempersingkat waktu proses dari **2-3 hari menjadi di bawah 1 hari** dengan error minimal.",
           en: "for motor vehicle maintenance billing of **15-50 vehicles (one invoice each) per billing**, cutting turnaround from **2-3 days to under 1 day** with minimal errors."
         },
         {
-          lead: { id: "Memanfaatkan AI di seluruh siklus pengembangan dokumen dan cross-checking", en: "Leverage AI across document development and cross-checking" },
+          lead: { id: "Memanfaatkan AI di seluruh pengembangan dokumen dan cross-checking", en: "Leverage AI across document development and cross-checking" },
           id: "untuk mempercepat delivery dan mengurangi error.",
           en: "to accelerate delivery and reduce errors."
+        }
+      ]
+    },
+    {
+      company: "PT Bringin Inti Teknologi",
+      role: { id: "Data Scientist", en: "Data Scientist" },
+      period: "Jun 2022 – Jun 2024",
+      location: "Jakarta, Indonesia",
+      scope: {
+        id: "Membangun pipeline data real-time, sistem deteksi fraud berbasis graph, dan dashboard analitik untuk sektor perbankan dan fintech.",
+        en: "Built real-time data pipelines, graph-based fraud detection, and analytics dashboards for banking and fintech."
+      },
+      tags: ["Python", "SQL", "Kafka", "TigerGraph", "GSQL", "Streamlit"],
+      bullets: [
+        {
+          lead: { id: "Membangun sistem deteksi money laundering", en: "Engineered a money laundering detection system" },
+          id: "menggunakan TigerGraph dan GSQL, menandai sekitar **6% transaksi bulanan** sebagai fraudulent dan mendukung compliance reporting.",
+          en: "using TigerGraph and GSQL, flagging approximately **6% of monthly transactions** as fraudulent and supporting compliance reporting."
+        },
+        {
+          lead: { id: "Membangun pipeline data otomatis dengan Python, Kafka, dan SQL", en: "Built automated data pipelines using Python, Kafka, and SQL" },
+          id: "menekan latensi pengiriman data hingga **50%** (dari 2 minggu menjadi 1 minggu).",
+          en: "reducing data delivery latency by **50%** (from 2 weeks down to 1 week)."
+        },
+        {
+          lead: { id: "Mengembangkan dashboard Streamlit real-time", en: "Developed real-time Streamlit dashboards" },
+          id: "mengalirkan live market insights dan analitik akses pengguna kepada **3 stakeholder** berbeda.",
+          en: "streaming live market insights and user access analytics to **3 different stakeholders**."
         }
       ]
     }
@@ -229,14 +209,36 @@ const PORTFOLIO = {
       links: []
     },
     {
-      title: "Rice Plant Malnutrition & Disease Detection",
-      period: "Jan 2022",
+      title: "Rice Plant Disease Detection",
+      period: "2022",
       category: { id: "Computer Vision", en: "Computer Vision" },
       description: {
-        id: "Aplikasi web untuk mendeteksi penyakit dan kekurangan nutrisi pada tanaman padi menggunakan TensorFlow, dengan prediksi real-time melalui antarmuka Streamlit.",
-        en: "A web application detecting rice plant diseases and nutrient deficiencies using TensorFlow, with real-time predictions through a Streamlit interface."
+        id: "Aplikasi web untuk mendeteksi penyakit pada tanaman padi menggunakan TensorFlow, dengan prediksi real-time melalui antarmuka Streamlit.",
+        en: "A web application detecting rice plant diseases using TensorFlow, with real-time predictions through a Streamlit interface."
       },
       stack: ["Python", "TensorFlow", "Streamlit", "Image Classification"],
+      links: []
+    },
+    {
+      title: "Airline Passenger Satisfaction",
+      period: "2022",
+      category: { id: "Machine Learning", en: "Machine Learning" },
+      description: {
+        id: "Model klasifikasi untuk memprediksi tingkat kepuasan penumpang pesawat menggunakan Gradient Boosting, dengan akurasi mencapai **95%**.",
+        en: "A classification model predicting airline passenger satisfaction using Gradient Boosting, reaching **95% accuracy**."
+      },
+      stack: ["Python", "Scikit-learn", "Gradient Boosting"],
+      links: []
+    },
+    {
+      title: "Telco Customer Churn",
+      period: "2022",
+      category: { id: "Deep Learning", en: "Deep Learning" },
+      description: {
+        id: "Pemodelan churn pelanggan telekomunikasi menggunakan Artificial Neural Network (ANN) untuk mengidentifikasi pelanggan berisiko tinggi berhenti, dengan akurasi **74%**.",
+        en: "Telecom customer churn modeling using an Artificial Neural Network (ANN) to identify high-risk customers, with **74% accuracy**."
+      },
+      stack: ["Python", "ANN", "TensorFlow", "Scikit-learn"],
       links: []
     }
   ],
@@ -253,16 +255,16 @@ const PORTFOLIO = {
       },
       // TODO: isi tahun lulus bila ada, mis. "2016 – 2020"
       period: "",
-      detail: { id: "Indeks Prestasi: 3.68", en: "GPA: 3.68" }
+      detail: { id: "Indeks Prestasi: 3.69", en: "GPA: 3.69" }
     }
   ],
 
   /* -------------------------------------------------------------- sertifikat */
   certHeading: { id: "Sertifikasi", en: "Certifications" },
   certifications: [
-    { name: "TigerGraph Associate Certification", issuer: "TigerGraph", year: "2023" },
-    { name: "Data Science Professional Certificate", issuer: "IBM", year: "—" },
-    { name: "Full Time Data Science Certificate", issuer: "Hacktiv8", year: "—" }
+    { name: "TigerGraph Associate", issuer: "TigerGraph", year: "2023" },
+    { name: "Data Science Professional", issuer: "IBM", year: "—" },
+    { name: "Full Time Data Science", issuer: "Hacktiv8", year: "—" }
   ],
 
   /* ---------------------------------------------------------------- kontak */

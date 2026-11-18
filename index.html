@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fadhil Reza Maulana — Data &amp; Analytics Professional</title>
   <meta name="description" content="Portfolio of Fadhil Reza Maulana — Data & Analytics Professional. Real-time data pipelines, dashboards, fraud detection, ML deployment, plus project budgeting (RAB), tender documentation, and progress reporting." />
   <meta name="author" content="Fadhil Reza Maulana" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#0a0a0a" />
 
   <!-- Open Graph / social preview -->
   <meta property="og:type" content="website" />
@@ -31,7 +31,7 @@
     (function () {
       try {
         var theme = localStorage.getItem("portfolio-theme");
-        document.documentElement.dataset.theme = theme === "dark" ? "dark" : "light";
+        document.documentElement.dataset.theme = theme === "light" ? "light" : "dark";
         var lang = localStorage.getItem("portfolio-lang");
         if (lang === "id" || lang === "en") document.documentElement.lang = lang;
       } catch (_) {}
@@ -90,7 +90,7 @@
       <span data-lang-opt="en">EN</span>
     </button>
     <button class="side-tool theme-toggle" type="button" data-theme-toggle aria-label="Ganti tema">
-      <span data-theme-label>dark mode.</span>
+      <span data-theme-label>light mode.</span>
     </button>
   </div>
 

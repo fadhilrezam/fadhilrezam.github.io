@@ -65,7 +65,7 @@
       const saved = localStorage.getItem("portfolio-theme");
       if (saved === "dark" || saved === "light") return saved;
     } catch (_) {}
-    return "light";
+    return "dark";
   }
 
   function syncThemeLabels() {

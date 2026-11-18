@@ -9,7 +9,7 @@ Personal portfolio website, built with plain HTML, CSS, and JavaScript. No frame
 ## Features
 
 - **Bilingual** — Indonesian & English with a navbar toggle; the choice is remembered in `localStorage`
-- **Dark / light theme** — light by default, toggle in the side rail (desktop) or topbar (mobile), persisted across visits
+- **Dark / light theme** — dark by default, toggle in the side rail (desktop) or topbar (mobile), persisted across visits
 - **Scroll reveal** — sections fade in as they enter the viewport
 - **Scroll spy** — the navbar highlights the section you're currently reading
 - **Sections** — background, core strengths, work experience, projects, education, certifications, contact
