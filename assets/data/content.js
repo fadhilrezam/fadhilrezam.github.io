@@ -175,7 +175,6 @@ const PORTFOLIO = {
     {
       title: "NVIDIA Stock Price Prediction",
       period: "Oct 2024 – Nov 2024",
-      category: { id: "Machine Learning", en: "Machine Learning" },
       description: {
         id: "Solusi end-to-end untuk memprediksi harga saham NVIDIA menggunakan data historis, dengan MLflow untuk versioning model. Model dideploy memakai Streamlit dan dikontainisasi dengan Docker.",
         en: "An end-to-end solution for predicting NVIDIA stock prices from historical data, with MLflow for model versioning. Deployed via Streamlit for real-time predictions and containerized with Docker."
@@ -189,7 +188,6 @@ const PORTFOLIO = {
     {
       title: "Money Laundering Detection System",
       period: "Jun 2023 – Mar 2024",
-      category: { id: "Fraud Detection", en: "Fraud Detection" },
       description: {
         id: "Sistem deteksi transaksi mencurigakan berbasis graph database TigerGraph menggunakan query language GSQL. Menandai sekitar 6% transaksi sebagai fraudulent setiap bulan dan menyajikan insight untuk pencegahan fraud.",
         en: "A graph-based suspicious transaction detection system using the TigerGraph graph database and GSQL. Flagging roughly 6% of transactions as fraudulent monthly and surfacing actionable insights for fraud prevention."
@@ -200,7 +198,6 @@ const PORTFOLIO = {
     {
       title: "HomeSpot Reporting Dashboard",
       period: "Jan 2023 – Jan 2024",
-      category: { id: "Dashboard", en: "Dashboard" },
       description: {
         id: "Dashboard reporting interaktif untuk melacak traffic website, engagement pengguna, dan aktivitas developer. Data disiapkan dengan SQL & Python, lalu dideploy sebagai aplikasi Streamlit.",
         en: "An interactive reporting dashboard tracking website traffic, user engagement, and developer activity. Data prepared with SQL and Python, deployed as a Streamlit app."
@@ -211,7 +208,6 @@ const PORTFOLIO = {
     {
       title: "Rice Plant Disease Detection",
       period: "2022",
-      category: { id: "Computer Vision", en: "Computer Vision" },
       description: {
         id: "Aplikasi web untuk mendeteksi penyakit pada tanaman padi menggunakan TensorFlow, dengan prediksi real-time melalui antarmuka Streamlit.",
         en: "A web application detecting rice plant diseases using TensorFlow, with real-time predictions through a Streamlit interface."
@@ -222,7 +218,6 @@ const PORTFOLIO = {
     {
       title: "Airline Passenger Satisfaction",
       period: "2022",
-      category: { id: "Machine Learning", en: "Machine Learning" },
       description: {
         id: "Model klasifikasi untuk memprediksi tingkat kepuasan penumpang pesawat menggunakan Gradient Boosting, dengan akurasi mencapai **95%**.",
         en: "A classification model predicting airline passenger satisfaction using Gradient Boosting, reaching **95% accuracy**."
@@ -233,7 +228,6 @@ const PORTFOLIO = {
     {
       title: "Telco Customer Churn",
       period: "2022",
-      category: { id: "Deep Learning", en: "Deep Learning" },
       description: {
         id: "Pemodelan churn pelanggan telekomunikasi menggunakan Artificial Neural Network (ANN) untuk mengidentifikasi pelanggan berisiko tinggi berhenti, dengan akurasi **74%**.",
         en: "Telecom customer churn modeling using an Artificial Neural Network (ANN) to identify high-risk customers, with **74% accuracy**."
@@ -300,7 +294,6 @@ const PORTFOLIO = {
       emailMe: { id: "Kirim Email", en: "Send Email" }
     },
     contact: {
-      formTitle: { id: "Kirim pesan", en: "Send a message" },
       name: { id: "Nama", en: "Name" },
       namePh: { id: "Nama lengkap Anda", en: "Your full name" },
       email: { id: "Email", en: "Email" },

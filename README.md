@@ -29,7 +29,7 @@ Personal portfolio website, built with plain HTML, CSS, and JavaScript. No frame
 | Hosting | GitHub Pages |
 | Typeface | Manrope + DotGothic16 |
 
-The whole site is roughly 50 KB before compression — no images, no libraries, no trackers.
+The whole site is roughly 40 KB before compression — no images, no libraries, no trackers.
 
 ## Run locally
 

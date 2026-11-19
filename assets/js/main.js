@@ -412,7 +412,7 @@
     );
 
     items.forEach((el, i) => {
-      if (!el.dataset.revealDelay) el.dataset.revealDelay = String((i % 6) * 55);
+      if (!el.dataset.revealDelay) el.dataset.revealDelay = String(i * 55);
       revealObserver.observe(el);
     });
   }
